@@ -17,7 +17,7 @@ class PartyDelegator extends StatelessWidget {
     return StreamBuilder<List<Map<String, dynamic>>>(
         stream: Provider.of<FirebaseFirestoreService>(context)
             .getPartyDataStream(
-                Provider.of<UserRepository>(context, listen: false).user.uid),
+                ),
         builder: (ctx, partySnapshot) {
           if (partySnapshot.connectionState != ConnectionState.active &&
               partySnapshot.hasData) return Constants.displayLoadingSpinner();

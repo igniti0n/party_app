@@ -107,7 +107,7 @@ class FirebaseFirestoreService {
   }
 
   //TODO: WATCH OUT FOR FETCHING PARTY DATA, WHEN WILL PARTIES UPDATE, WHEN DO THEY NEED TO UPDATE FOR A SPECIFIC PERSON
-  Stream<List<Map<String, dynamic>>> getPartyDataStream(String currentUserId) {
+  Stream<List<Map<String, dynamic>>> getPartyDataStream() {
     final _parties = instance
         .collection('parties')
         .orderBy('createdAt', descending: false)
