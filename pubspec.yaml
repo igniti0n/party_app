@@ -26,7 +26,9 @@ dependencies:
   auto_size_text: null
   clip_shadow: ^0.2.1
   cloud_firestore: ^1.0.3
+  either_dart: ^0.0.5
   email_validator: ^2.0.1
+  equatable: ^2.0.0
   firebase_auth: ^1.0.1
   firebase_core: ^1.0.2
   firebase_storage: ^8.0.1
