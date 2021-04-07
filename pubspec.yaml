@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   auto_size_text: null
+  bloc: ^7.0.0
   clip_shadow: ^0.2.1
   cloud_firestore: ^1.0.3
   data_connection_checker: ^0.3.4

@@ -2,10 +2,10 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants.dart';
-import '../../../data/datasources/FirebaseAuthService.dart';
-import '../../widgets/auth_button.dart';
-import '../../widgets/auth_white_input_field.dart';
+import '../../../../../../constants.dart';
+import '../../../../../data/datasources/FirebaseAuthService.dart';
+import '../../../../widgets/auth_button.dart';
+import '../../../../widgets/auth_white_input_field.dart';
 
 class AuthLoginScreen extends StatefulWidget {
   AuthLoginScreen({Key key}) : super(key: key);

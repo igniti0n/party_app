@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants.dart';
-import '../../../data/datasources/FirebaseFirestoreService.dart';
-import '../../../data/datasources/FirebaseStorageService.dart';
-import '../../../../core/native/ImagePickerService.dart';
-import '../../widgets/auth_button.dart';
-import '../../widgets/auth_white_input_field.dart';
+import '../../../../../../constants.dart';
+import '../../../../../data/datasources/FirebaseFirestoreService.dart';
+import '../../../../../data/datasources/FirebaseStorageService.dart';
+import '../../../../../../core/native/ImagePickerService.dart';
+import '../../../../widgets/auth_button.dart';
+import '../../../../widgets/auth_white_input_field.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key key, @required this.uid}) : super(key: key);
