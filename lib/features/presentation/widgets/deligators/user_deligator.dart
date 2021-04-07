@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
+import 'package:party/core/failures/failure.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
@@ -20,13 +22,13 @@ class UserDeligator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('::::USER DELIGATOR::::');
-    return StreamBuilder<Map<String, dynamic>>(
+    return StreamBuilder<Either<Failure, User>>(
         stream: Provider.of<FirebaseFirestoreService>(context, listen: false)
             .getUserDataStream(uid),
         builder: (ctx, snapshot) {
           if (snapshot.connectionState != ConnectionState.active)
             return Constants.displayLoadingSpinner();
-          _userRepository.setUser(User.fromMap(snapshot.data, uid));
+          //  _userRepository.setUser();
 
           log("user data stream changed");
           log("${_userRepository.user}");

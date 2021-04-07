@@ -9,7 +9,9 @@ class AddUserFriendRequest {
 
   const AddUserFriendRequest(this._userRepository);
 
-  Future<Either<Failure, NoParams>> call(String userToBeSent, List<String> userToBeSentFriendReq) {
-    return _userRepository.updateAddUserFriendRequest(userToBeSent, userToBeSentFriendReq);
+  Future<Either<Failure, NoParams>> call(
+      String userToBeSent, List<String> userToBeSentFriendReq) {
+    return _userRepository.updateAddOtherUserFriendRequest(
+        userToBeSent, userToBeSentFriendReq);
   }
 }

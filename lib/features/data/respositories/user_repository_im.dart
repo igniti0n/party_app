@@ -15,7 +15,6 @@ class UserRepositoryImplementation extends UserRepository {
 
   @override
   Future<Either<Failure, User>> getUserData(String uid) async {
-    // TODO: implement getUserData
     try {
       final User res = await _firebaseFirestoreService.getUserData(uid);
       return Right(res);
@@ -25,9 +24,8 @@ class UserRepositoryImplementation extends UserRepository {
   }
 
   @override
-  Stream<Either<Failure, User>> gettUserStream(String uid) {
-    // TODO: implement gettUserStream
-    throw UnimplementedError();
+  Stream<Either<Failure, User>> getUserStream(String uid) {
+    return _firebaseFirestoreService.getUserDataStream(_currentUser.uid);
   }
 
   @override
@@ -63,7 +61,7 @@ class UserRepositoryImplementation extends UserRepository {
   }
 
   @override
-  Future<Either<Failure, NoParams>> updateAddUserFriendRequest(
+  Future<Either<Failure, NoParams>> updateAddOtherUserFriendRequest(
       String userToBeSent, List<String> friendReq) async {
     try {
       friendReq.add(_currentUser.uid);
@@ -81,15 +79,52 @@ class UserRepositoryImplementation extends UserRepository {
   @override
   Future<Either<Failure, NoParams>> updateAddUserFriends(
     String firendId,
+    List<String> friends,
   ) async {
     try {
-      _currentUser.friends.add(firendId);
-      await _firebaseFirestoreService.updateUserFriends(
-          userTobeSent: _currentUser.uid, value: _currentUser.friends);
+      //UPDATE BOTH USERS FRIENDS !!!!
+      if (!_currentUser.friends.contains(firendId)) {
+        _currentUser.friends.add(firendId);
+        await _firebaseFirestoreService.updateUserFriends(
+            userTobeSent: _currentUser.uid, value: _currentUser.friends);
+      }
+
+      if (!friends.contains(_currentUser.uid)) {
+        friends.add(_currentUser.uid);
+        await _firebaseFirestoreService.updateUserFriends(
+            userTobeSent: firendId, value: friends);
+      }
 
       return Right(NoParams());
     } catch (err) {
-      _currentUser.friends.removeLast();
+      _currentUser.friends.removeWhere((element) => element == firendId);
+      friends.removeWhere((element) => element == _currentUser.uid);
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, NoParams>> updateRemoveUserFriends(
+    String friendId,
+    List<String> friends,
+  ) async {
+    try {
+      //UPDATE BOTH USERS FRIENDS !!!!
+      if (_currentUser.friends.contains(friendId)) {
+        _currentUser.friends.remove(friendId);
+        await _firebaseFirestoreService.updateUserFriends(
+            userTobeSent: _currentUser.uid, value: _currentUser.friends);
+      }
+
+      if (friends.contains(_currentUser.uid)) {
+        friends.remove(_currentUser.uid);
+        await _firebaseFirestoreService.updateUserFriends(
+            userTobeSent: friendId, value: friends);
+      }
+
+      return Right(NoParams());
+    } catch (err) {
+      _currentUser.friends.add(friendId);
       return Left(ServerFailure());
     }
   }
@@ -111,23 +146,36 @@ class UserRepositoryImplementation extends UserRepository {
 
   @override
   Future<Either<Failure, NoParams>> updateRemoveUserCreatedParties(
-      String partyId) {
-    // TODO: implement updateRemoveUserCreatedParties
-    throw UnimplementedError();
+      String partyId) async {
+    try {
+      _currentUser.createdPartyIds
+          .removeWhere((element) => element.toString() == partyId);
+      await _firebaseFirestoreService.updateUserCreatedParties(
+        _currentUser.attendedPartyIds,
+        _currentUser.uid,
+      );
+      return Right(NoParams());
+    } catch (err) {
+      _currentUser.createdPartyIds.add(partyId);
+      return Left(ServerFailure());
+    }
   }
 
   @override
-  Future<Either<Failure, NoParams>> updateRemoveUserFriendRequest(
+  Future<Either<Failure, NoParams>> updateRemoveOtherUserFriendRequest(
     String userToBeSent,
-    List<String> userToBeSentFriendReq,
-  ) {
-    // TODO: implement updateRemoveUserFriendRequest
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, NoParams>> updateRemoveUserFriends(String friendId) {
-    // TODO: implement updateRemoveUserFriends
-    throw UnimplementedError();
+  ) async {
+    try {
+      _currentUser.friendRequests
+          .removeWhere((element) => element == userToBeSent);
+      await _firebaseFirestoreService.updateUserFriendRequest(
+        userToBeSent,
+        _currentUser.friendRequests,
+      );
+      return Right(NoParams());
+    } catch (err) {
+      _currentUser.friendRequests.add(userToBeSent);
+      return Left(ServerFailure());
+    }
   }
 }

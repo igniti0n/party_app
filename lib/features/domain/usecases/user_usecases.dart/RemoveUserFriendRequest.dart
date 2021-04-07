@@ -9,9 +9,7 @@ class RemoveUserFriendRequest {
 
   const RemoveUserFriendRequest(this._userRepository);
 
-  Future<Either<Failure, NoParams>> call(
-      String userToBeSent, List<String> userToBeSentFriendReq) {
-    return _userRepository.updateRemoveUserFriendRequest(
-        userToBeSent, userToBeSentFriendReq);
+  Future<Either<Failure, NoParams>> call(String userToBeSent) {
+    return _userRepository.updateRemoveOtherUserFriendRequest(userToBeSent);
   }
 }

@@ -10,6 +10,6 @@ class GetUserStream {
   const GetUserStream(this._userRepository);
 
   Stream<Either<Failure, User>> call(String uid) {
-    return _userRepository.gettUserStream(uid);
+    return _userRepository.getUserStream(uid);
   }
 }

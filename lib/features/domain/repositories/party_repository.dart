@@ -21,8 +21,12 @@ abstract class PartyRepository {
   Future<Either<Failure, NoParams>> storePartyInACollection(Party party);
   Future<Either<Failure, NoParams>> updatePartyImageUrl(
       String partyId, String downloadUrl);
-  Future<Either<Failure, NoParams>> AddPartyLikes(String partyId);
-  Future<Either<Failure, NoParams>> RemovePartyLikes(String partyId);
-  Future<Either<Failure, NoParams>> AddPartyPeopleComing(String partyId);
-  Future<Either<Failure, NoParams>> RemovePartyPeopleComing(String partyId);
+  Future<Either<Failure, NoParams>> addPartyLikes(
+      String partyId, List<String> partyLikes);
+  Future<Either<Failure, NoParams>> removePartyLikes(
+      String partyId, List<String> partyLikes);
+  Future<Either<Failure, NoParams>> addPartyPeopleComing(
+      String partyId, List<String> peopleComing);
+  Future<Either<Failure, NoParams>> removePartyPeopleComing(
+      String partyId, List<String> peopleComing);
 }

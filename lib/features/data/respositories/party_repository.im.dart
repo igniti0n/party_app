@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:party/core/failures/server_failure.dart';
 import 'package:party/features/data/datasources/FirebaseFirestoreService.dart';
 import 'package:party/features/domain/repositories/no_params.dart';
 import 'package:party/features/data/models/party.dart';
@@ -10,66 +13,130 @@ class PartyRepositoryIm extends PartyRepository {
   const PartyRepositoryIm(this._firebaseFirestoreService);
 
   @override
-  Future<Either<Failure, NoParams>> AddPartyLikes(String partyId) {
-    // TODO: implement AddPartyLikes
-    throw UnimplementedError();
+  Future<Either<Failure, NoParams>> addPartyLikes(
+      String partyId, List<String> partyLikes) async {
+    return updatePartyLikes(partyId, partyLikes);
   }
 
   @override
-  Future<Either<Failure, NoParams>> AddPartyPeopleComing(String partyId) {
-    // TODO: implement AddPartyPeopleComing
-    throw UnimplementedError();
+  Future<Either<Failure, NoParams>> removePartyLikes(
+      String partyId, List<String> partyLikes) async {
+    return updatePartyLikes(partyId, partyLikes);
+  }
+
+  Future<Either<Failure, NoParams>> updatePartyLikes(
+      String partyId, List<String> partyLikes) async {
+    try {
+      await _firebaseFirestoreService.updatePartyLikes(
+        partyId,
+        partyLikes,
+      );
+      return Right(NoParams());
+    } catch (error) {
+      return Left(ServerFailure());
+    }
   }
 
   @override
-  Future<Either<Failure, NoParams>> RemovePartyLikes(String partyId) {
-    // TODO: implement RemovePartyLikes
-    throw UnimplementedError();
+  Future<Either<Failure, NoParams>> addPartyPeopleComing(
+      String partyId, List<String> peopleComing) async {
+    return updatePartyPeopleComing(
+      partyId,
+      peopleComing,
+    );
   }
 
   @override
-  Future<Either<Failure, NoParams>> RemovePartyPeopleComing(String partyId) {
-    // TODO: implement RemovePartyPeopleComing
-    throw UnimplementedError();
+  Future<Either<Failure, NoParams>> removePartyPeopleComing(
+    String partyId,
+    List<String> peopleComing,
+  ) async {
+    return updatePartyPeopleComing(
+      partyId,
+      peopleComing,
+    );
+  }
+
+  Future<Either<Failure, NoParams>> updatePartyPeopleComing(
+    String partyId,
+    List<String> peopleComing,
+  ) async {
+    try {
+      await _firebaseFirestoreService.updatePartyPeopleComing(
+        partyId,
+        peopleComing,
+      );
+      return Right(NoParams());
+    } catch (error) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, NoParams>> storePartyInACollection(Party party) async {
+    try {
+      await _firebaseFirestoreService
+          .storePartyInACollection(Party.toMap(party));
+      return Right(NoParams());
+    } catch (error) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, NoParams>> updatePartyImageUrl(
+      String partyId, String downloadUrl) async {
+    try {
+      await _firebaseFirestoreService.updatePartyImageUrl(partyId, downloadUrl);
+      return Right(NoParams());
+    } catch (error) {
+      return Left(ServerFailure());
+    }
   }
 
   @override
   Stream<Either<Failure, List<Party>>> getAllParties() {
-    // TODO: implement getAllParties
-    throw UnimplementedError();
+    return _firebaseFirestoreService
+        .getPartyDataStream()
+        .map<Either<Failure, List<Party>>>(
+            (List<Map<String, dynamic>> parties) => mapPartyStream(parties));
   }
 
   @override
   Stream<Either<Failure, List<Party>>> getPartiesMoreThanNumberOfPeopleStream(
       int numberOfPeople) {
-    // TODO: implement getPartiesMoreThanNumberOfPeopleStream
-    throw UnimplementedError();
+    return _firebaseFirestoreService
+        .getPartyDataMoreThanNumberOfPeopleStream(numberOfPeople)
+        .map<Either<Failure, List<Party>>>(
+            (List<Map<String, dynamic>> parties) => mapPartyStream(parties));
   }
 
   @override
   Stream<Either<Failure, List<Party>>> getPartyDataForAttendedByUser(
       List partyIds) {
-    // TODO: implement getPartyDataForAttendedByUser
-    throw UnimplementedError();
+    return _firebaseFirestoreService
+        .getPartyDataForAttendedByUser(partyIds)
+        .map<Either<Failure, List<Party>>>(
+            (List<Map<String, dynamic>> parties) => mapPartyStream(parties));
   }
 
   @override
   Stream<Either<Failure, List<Party>>> getPartyDataForCreatedByUser(
       String userId) {
-    // TODO: implement getPartyDataForCreatedByUser
-    throw UnimplementedError();
+    return _firebaseFirestoreService
+        .getPartyDataForCreatedByUser(userId)
+        .map<Either<Failure, List<Party>>>(
+            (List<Map<String, dynamic>> parties) => mapPartyStream(parties));
   }
+}
 
-  @override
-  Future<Either<Failure, NoParams>> storePartyInACollection(Party party) {
-    // TODO: implement storePartyInACollection
-    throw UnimplementedError();
-  }
+Either<Failure, List<Party>> mapPartyStream(
+    List<Map<String, dynamic>> parties) {
+  if (parties == null) return Left(ServerFailure());
+  final List<Party> _partyList = parties
+      .map((Map<String, dynamic> party) => Party.fromMap(party)) as List<Party>;
 
-  @override
-  Future<Either<Failure, NoParams>> updatePartyImageUrl(
-      String partyId, String downloadUrl) {
-    // TODO: implement updatePartyImageUrl
-    throw UnimplementedError();
-  }
+  log("All parties stream:   ");
+  log(_partyList.toString());
+  return Right(_partyList);
 }

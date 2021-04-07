@@ -9,7 +9,8 @@ class RemovePartyPeopleComming {
 
   const RemovePartyPeopleComming(this._partyRepository);
 
-  Future<Either<Failure, NoParams>> call(String partyId) {
-    return _partyRepository.RemovePartyPeopleComing(partyId);
+  Future<Either<Failure, NoParams>> call(
+      String partyId, List<String> peopleComing) {
+    return _partyRepository.removePartyPeopleComing(partyId, peopleComing);
   }
 }

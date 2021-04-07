@@ -9,7 +9,10 @@ class AddUserFriends {
 
   const AddUserFriends(this._userRepository);
 
-  Future<Either<Failure, NoParams>> call(String friendId) {
-    return _userRepository.updateAddUserFriends(friendId);
+  Future<Either<Failure, NoParams>> call(
+    String friendId,
+    List<String> friends,
+  ) {
+    return _userRepository.updateAddUserFriends(friendId, friends);
   }
 }

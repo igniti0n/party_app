@@ -9,7 +9,8 @@ class AddPartyPeopleComming {
 
   const AddPartyPeopleComming(this._partyRepository);
 
-  Future<Either<Failure, NoParams>> call(String partyId) {
-    return _partyRepository.AddPartyLikes(partyId);
+  Future<Either<Failure, NoParams>> call(
+      String partyId, List<String> peopleComing) {
+    return _partyRepository.addPartyLikes(partyId, peopleComing);
   }
 }
