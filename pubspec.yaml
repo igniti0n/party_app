@@ -26,6 +26,7 @@ dependencies:
   auto_size_text: null
   clip_shadow: ^0.2.1
   cloud_firestore: ^1.0.3
+  data_connection_checker: ^0.3.4
   either_dart: ^0.0.5
   email_validator: ^2.0.1
   equatable: ^2.0.0

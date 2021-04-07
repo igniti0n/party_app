@@ -8,7 +8,8 @@ class GetPartiesForMoreThanNumberOfPeople {
 
   const GetPartiesForMoreThanNumberOfPeople(this._partyRepository);
 
-  Stream<Either<Failure, List<Party>>> call() {
-    return null;
+  Stream<Either<Failure, List<Party>>> call(int numberOfPeople) {
+    return _partyRepository
+        .getPartiesMoreThanNumberOfPeopleStream(numberOfPeople);
   }
 }

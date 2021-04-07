@@ -1,14 +1,15 @@
 import 'package:either_dart/either.dart';
 import 'package:party/core/failures/failure.dart';
 import 'package:party/features/data/models/party.dart';
+import 'package:party/features/domain/repositories/no_params.dart';
 import 'package:party/features/domain/repositories/party_repository.dart';
 
-class GetAllPartiesCreatedByUser {
+class StorePartyInCollection {
   final PartyRepository _partyRepository;
 
-  const GetAllPartiesCreatedByUser(this._partyRepository);
+  const StorePartyInCollection(this._partyRepository);
 
-  Stream<Either<Failure, List<Party>>> call(String userId) {
-    return _partyRepository.getPartyDataForCreatedByUser(userId);
+  Future<Either<Failure, NoParams>> call(Party party) {
+    return _partyRepository.storePartyInACollection(party);
   }
 }

@@ -2,12 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'features/processWidgets/auth_screen_builder.dart';
-import 'features/processWidgets/auth_widget.dart';
-import 'features/processWidgets/user_deligator.dart';
-import 'features/screens/party_detail_screen.dart';
-import 'features/services/FirebaseAuthService.dart';
-import 'features/services/ImagePickerService.dart';
+import 'features/presentation/widgets/deligators/auth_screen_builder.dart';
+import 'features/presentation/widgets/deligators/auth_widget.dart';
+import 'features/presentation/widgets/deligators/user_deligator.dart';
+import 'features/presentation/screens/party_detail_screen.dart';
+import 'features/data/datasources/FirebaseAuthService.dart';
+import 'core/native/ImagePickerService.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,8 +1,9 @@
 import 'package:either_dart/either.dart';
-import 'package:party/features/domain/repositories/party_repository.dart';
 
 import '../../../../core/failures/failure.dart';
 import '../../../data/models/party.dart';
+import '../../repositories/party_repository.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
 
 class GetAllPartiesUsecase {
   final PartyRepository _partyRepository;
@@ -10,6 +11,6 @@ class GetAllPartiesUsecase {
   const GetAllPartiesUsecase(this._partyRepository);
 
   Stream<Either<Failure, List<Party>>> call() {
-    return null;
+    return _partyRepository.getAllParties();
   }
 }

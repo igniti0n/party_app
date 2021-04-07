@@ -1,11 +1,14 @@
 import 'package:either_dart/either.dart';
 import 'package:party/core/failures/failure.dart';
+import 'package:party/features/domain/repositories/no_params.dart';
 
 import '../../data/models/party.dart';
 
 abstract class PartyRepository {
-  List<Party> parties;
-  Party currentParty;
+  // List<Party> parties;
+  // Party currentParty;
+
+  const PartyRepository();
 
   Stream<Either<Failure, List<Party>>> getAllParties();
   Stream<Either<Failure, List<Party>>> getPartiesMoreThanNumberOfPeopleStream(
@@ -15,10 +18,11 @@ abstract class PartyRepository {
   Stream<Either<Failure, List<Party>>> getPartyDataForAttendedByUser(
       List<dynamic> partyIds);
 
-  Future<void> storePartyInACollection(Party party);
-  Future<void> updatePartyImageUrl(String partyId, String downloadUrl);
-  Future<void> AddPartyLikes(String partyId);
-  Future<void> RemovePartyLikes(String partyId);
-  Future<void> AddPartyPeopleComing();
-  Future<void> RemovePartyPeopleComing();
+  Future<Either<Failure, NoParams>> storePartyInACollection(Party party);
+  Future<Either<Failure, NoParams>> updatePartyImageUrl(
+      String partyId, String downloadUrl);
+  Future<Either<Failure, NoParams>> AddPartyLikes(String partyId);
+  Future<Either<Failure, NoParams>> RemovePartyLikes(String partyId);
+  Future<Either<Failure, NoParams>> AddPartyPeopleComing(String partyId);
+  Future<Either<Failure, NoParams>> RemovePartyPeopleComing(String partyId);
 }

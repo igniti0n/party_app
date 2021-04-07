@@ -8,7 +8,7 @@ class GetAllPartiesAttendedByUser {
 
   const GetAllPartiesAttendedByUser(this._partyRepository);
 
-  Stream<Either<Failure, List<Party>>> call() {
-    return null;
+  Stream<Either<Failure, List<Party>>> call(List<String> partyIds) {
+    return _partyRepository.getPartyDataForAttendedByUser(partyIds);
   }
 }
