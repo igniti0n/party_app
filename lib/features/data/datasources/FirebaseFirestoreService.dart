@@ -1,6 +1,9 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:either_dart/either.dart';
+import 'package:party/core/failures/failure.dart';
+import 'package:party/core/failures/server_failure.dart';
 
 import '../models/user.dart';
 
@@ -158,10 +161,11 @@ class FirebaseFirestoreService {
 
   //TODO: provide different querying for different situations, this is an example (mby later even devide by country
   //in seperate collections or continents for faster when scaling)
-  Stream<List<Map<String, dynamic>>> getPartyDataMoreThanFourPeopleStream() {
+  Stream<List<Map<String, dynamic>>> getPartyDataMoreThanNumberOfPeopleStream(
+      int numberOfPeople) {
     final _parties = instance
         .collection('parties')
-        .where('numberOfPeopleComming', isGreaterThan: 4)
+        .where('numberOfPeopleComming', isGreaterThan: numberOfPeople)
         .snapshots();
 
     return _parties.map((QuerySnapshot querySnapshot) => querySnapshot == null
@@ -202,16 +206,18 @@ class FirebaseFirestoreService {
             .toList());
   }
 
-  Stream<Map<String, dynamic>> getUserDataStream(String uid) {
+  Stream<Either<Failure, User>> getUserDataStream(String uid) {
     final DocumentReference documentReference =
         instance.collection('users').doc(uid);
     final stream = documentReference.snapshots();
 
     return stream.map((DocumentSnapshot event) {
       log('EVENT :::${event?.data()}');
-      // final user = User.fromMap(event?.data());
+
+      if (!event.exists) return Left(ServerFailure());
+      final user = User.fromMap(event?.data(), uid);
       // print('USERNAME: ${user?.username}');
-      return event.data();
+      return Right(user);
     });
   }
 }
